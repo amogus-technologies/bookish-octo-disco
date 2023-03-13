@@ -1,4 +1,6 @@
 import { Duplex } from "stream";
+import { EventEmitter } from "events";
+import { Socket } from "net";
 
 export interface Response {
     statusCode: number;
@@ -72,9 +74,9 @@ export class HTTP {
 }
 
 export class Client extends Duplex {
-    
+    private _socket: Socket;
 }
 
-export class Server {
+export class Server extends EventEmitter {
     
 }
