@@ -80,7 +80,7 @@ export class HTTP {
         let [firstLine, ...head] = requestStr.split('\r\n\r\n')[0].split('\r\n');
         let headersArr = head.map(header => {
             let entry = header.split(': ');
-            return { [entry[0]]: entry[1] };
+            return { [entry[0].toLowerCase()]: entry[1] };
         });
         let bodyStart = requestStr.indexOf('\r\n\r\n') + 4;
         let body = request.subarray(bodyStart);
@@ -96,7 +96,7 @@ export class HTTP {
         let [firstLine, ...head] = responseStr.split('\r\n\r\n')[0].split('\r\n');
         let headersArr = head.map(header => {
             let entry = header.split(': ');
-            return { [entry[0]]: entry[1] };
+            return { [entry[0].toLowerCase()]: entry[1] };
         });
         let bodyStart = responseStr.indexOf('\r\n\r\n') + 4;
         let body = response.subarray(bodyStart);
@@ -134,22 +134,24 @@ export class Client extends EventEmitter {
     constructor() {
         super();
         this._socket = new Socket();
+        this.ip = this._socket.localAddress || '0.0.0.0';
         this._socket.on('close', () => {
             this.emit('close');
         });
     }
+    public ip: string;
     public on: <K extends keyof ClientEventMap>(event: K, cb: ClientEventMap[K]) => this;
     public once: <K extends keyof ClientEventMap>(event: K, cb: ClientEventMap[K]) => this;
     public addListener: <K extends keyof ClientEventMap>(event: K, cb: ClientEventMap[K]) => this;
     public connect(port: number, host?: string): this {
         this._socket.connect({ port, host });
         this._socket.once('connect', () => {
+            this.ip = this._socket.localAddress || '0.0.0.0';
             this.emit('ready');
             this._socket.once('data', (data: Buffer) => {
                 let response = HTTP.parseResponse(data);
                 this._socket.on('data', (data: Buffer) => {
                     this.emit('data', data);
-                    
                 });
                 this.emit('response', response);
             });
@@ -242,6 +244,7 @@ export class Client extends EventEmitter {
      */
     public _setSocket(socket: Socket): this {
         this._socket = socket;
+        this.ip = this._socket.localAddress || '0.0.0.0';
         return this;
     }
 }
@@ -277,8 +280,8 @@ export class Server extends EventEmitter {
     }
 }
 
-export function createServer(): Server {
-    return new Server();
+export function createServer(connectionCallback?: (client: Client) => void): Server {
+    return connectionCallback ? new Server().on('connect', connectionCallback) : new Server();
 }
 
 export function connect(port: number, host?: string): Client {
