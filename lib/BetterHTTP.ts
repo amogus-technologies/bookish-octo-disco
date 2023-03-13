@@ -1,6 +1,11 @@
+/**
+ * @file BetterHTTP.ts
+ * @description I am making a HTTP library from scratch because I am bored. This is not meant to be used in production. This is just for fun. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this--
+ */
+
 import { Duplex } from "stream";
 import { EventEmitter } from "events";
-import { Socket } from "net";
+import { Socket, Server as nativeServer } from "net";
 
 export interface Response {
     statusCode: number;
@@ -73,10 +78,12 @@ export class HTTP {
     }
 }
 
-interface ClientEventMap {
+interface ClientEventMap { // not exporting this you little -
     ready: () => void;
     response: (response: Response) => void;
+    request: (request: Request) => void;
     data: (data: Buffer) => void;
+    close: () => void;
 }
 
 export class Client extends EventEmitter {
@@ -84,6 +91,9 @@ export class Client extends EventEmitter {
     constructor() {
         super();
         this._socket = new Socket();
+        this._socket.on('close', () => {
+            this.emit('close');
+        });
     }
     public on: <K extends keyof ClientEventMap>(event: K, cb: ClientEventMap[K]) => this;
     public once: <K extends keyof ClientEventMap>(event: K, cb: ClientEventMap[K]) => this;
@@ -107,8 +117,119 @@ export class Client extends EventEmitter {
         this._socket.destroy();
         return this;
     }
+    public request(request: Request): this {
+        this._socket.write(HTTP.serializeRequest(request));
+        return this;
+    }
+    public response(response: Response): this {
+        this._socket.write(HTTP.serializeResponse(response));
+        return this;
+    }
+    public send(data: Buffer): this {
+        this._socket.write(data);
+        return this;
+    }
+    /**
+     * do not use this if you are a bot
+     * do not use this if you are a human
+     * do not use this if you are a cat
+     * do not use this if you are a dog
+     * do not use this if you are a fish
+     * do not use this if you are a bird
+     * do not use this if you are a snake
+     * do not use this if you are a frog
+     * do not use this if you are a turtle
+     * do not use this if you are a rabbit
+     * do not use this if you are a mouse
+     * do not use this if you are a hamster
+     * do not use this if you are a guinea pig
+     * do not use this if you are a squirrel
+     * do not use this if you are a rat
+     * do not use this if you are a bat
+     * do not use this if you are a spider
+     * do not use this if you are a scorpion
+     * do not use this if you are a crab
+     * do not use this if you are a lobster
+     * do not use this if you are a shrimp
+     * do not use this if you are a snail
+     * do not use this if you are a slug
+     * do not use this if you are a worm
+     * do not use this if you are a beetle
+     * do not use this if you are a ant (an*)
+     * do not use this if you are a fly
+     * do not use this if you are a mosquito
+     * do not use this if you are a bee
+     * do not use this if you are a wasp
+     * do not use this if you are a butterfly
+     * do not use this if you are a moth
+     * do not use this if you are a dragonfly
+     * do not use this if you are a grasshopper
+     * do not use this if you are a cricket
+     * do not use this if you are a cockroach
+     * do not use this if you are a mantis
+     * do not use this if you are a centipede
+     * do not use this if you are a millipede
+     * do not use this if you are a snail
+     * do not use this if you are a slug
+     * do not use this if you are a worm
+     * do not use this if you are a beetle
+     * do not use this if you are a ant (wait im repeating myself)
+     * do not use this if you are a pet animal
+     * do not use this if you are a wild animal
+     * do not use this if you are a domestic animal
+     * do not use this if you are a farm animal
+     * do not use this if you are a zoo animal
+     * do not use this if you are a circus animal
+     * do not use this if you are a circus animal
+     * do not use this if you are a circus animal
+     * do not use this if you are a circus animal (github copilot is running out of ideas)
+     * do not use this if you are a circus animal
+     * do not use this if you are a circus animal (ok i stop now)
+     * do not use this if you are a circus animal (i lied about stopping)
+     * do not use this if you are a circus animal (i lied about lying)
+     * do not use this if you are a circus animal (i lied about lying about lying)
+     * do not use this if you are a circus animal (i lied about lying about lying about lying)
+     * do not use this if you are a circus animal (i lied about lying about lying about lying about lying)
+     * do not use this if you are a circus animal (i lied about lying about lying about lying about lying about lying)
+     * do not use this if you are a circus animal (i lied about lying about lying about lying about lying about lying about lying)
+     * do not use this if you are a circus animal (i lied about lying about lying about lying about lying about lying about lying about lying)
+     * do not use this if you are a circus animal (i lied about lying about lying about lying about lying about lying about lying about lying about lying)
+     * do not use this if you are a circus animal (i lied about lying about lying about lying about lying about lying about lying about lying about lying about lying)
+     * do not use this if you are a sentient robot
+     */
+    public _setSocket(socket: Socket): this {
+        this._socket = socket;
+        return this;
+    }
+}
+
+/* export */ interface ServerEventMap {
+    connect: (client: Client) => void;
 }
 
 export class Server extends EventEmitter {
-    
+    private _server: nativeServer;
+    public on: <K extends keyof ServerEventMap>(event: K, cb: ServerEventMap[K]) => this;
+    public once: <K extends keyof ServerEventMap>(event: K, cb: ServerEventMap[K]) => this;
+    public addListener: <K extends keyof ServerEventMap>(event: K, cb: ServerEventMap[K]) => this;
+    constructor() {
+        super();
+        this._server = new nativeServer();
+    }
+    public listen(port: number, host?: string): this {
+        this._server.listen({ port, host });
+        this._server.on('connection', (socket: Socket) => {
+            let client = new Client();
+            socket.once('data', (data: Buffer) => {
+                let request = HTTP.parseRequest(data);
+                client.emit('request', request);
+                socket.on('data', (data: Buffer) => {
+                    client.emit('data', data);
+                });
+            });
+            client._setSocket(socket);
+            this.emit('connect', client);
+        });
+        return this;
+    }
 }
