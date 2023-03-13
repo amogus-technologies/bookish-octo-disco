@@ -14,7 +14,7 @@ export class App {
                     },
                     body: Buffer.from(response),
                     statusMessage: 'OK'
-                })
+                });
             });
         });
     }

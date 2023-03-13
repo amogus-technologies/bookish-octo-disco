@@ -133,6 +133,9 @@ export class Client extends EventEmitter {
     private _socket: Socket;
     constructor() {
         super();
+        this.on = super.on; // this is so that the typescript compiler doesn't complain
+        this.once = super.once;
+        this.addListener = super.addListener;
         this._socket = new Socket();
         this.ip = this._socket.localAddress || '0.0.0.0';
         this._socket.on('close', () => {
@@ -260,6 +263,9 @@ export class Server extends EventEmitter {
     public addListener: <K extends keyof ServerEventMap>(event: K, cb: ServerEventMap[K]) => this;
     constructor() {
         super();
+        this.on = super.on; // this is also that the typescript compiler doesn't complain
+        this.once = super.once;
+        this.addListener = super.addListener;
         this._server = new nativeServer();
     }
     public listen(port: number, host?: string): this {
