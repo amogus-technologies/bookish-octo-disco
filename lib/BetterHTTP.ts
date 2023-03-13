@@ -73,8 +73,40 @@ export class HTTP {
     }
 }
 
-export class Client extends Duplex {
+interface ClientEventMap {
+    ready: () => void;
+    response: (response: Response) => void;
+    data: (data: Buffer) => void;
+}
+
+export class Client extends EventEmitter {
     private _socket: Socket;
+    constructor() {
+        super();
+        this._socket = new Socket();
+    }
+    public on: <K extends keyof ClientEventMap>(event: K, cb: ClientEventMap[K]) => this;
+    public once: <K extends keyof ClientEventMap>(event: K, cb: ClientEventMap[K]) => this;
+    public addListener: <K extends keyof ClientEventMap>(event: K, cb: ClientEventMap[K]) => this;
+    public connect(port: number, host?: string): this {
+        this._socket.connect({ port, host });
+        this._socket.once('connect', () => {
+            this.emit('ready');
+            this._socket.once('data', (data: Buffer) => {
+                let response = HTTP.parseResponse(data);
+                this._socket.on('data', (data: Buffer) => {
+                    this.emit('data', data);
+                    
+                });
+                this.emit('response', response);
+            });
+        });
+        return this;
+    }
+    public close(): this {
+        this._socket.destroy();
+        return this;
+    }
 }
 
 export class Server extends EventEmitter {
