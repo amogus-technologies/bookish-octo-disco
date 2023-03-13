@@ -276,3 +276,11 @@ export class Server extends EventEmitter {
         return this;
     }
 }
+
+export function createServer(): Server {
+    return new Server();
+}
+
+export function connect(port: number, host?: string): Client {
+    return new Client().connect(port, host);
+}
