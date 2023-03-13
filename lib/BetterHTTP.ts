@@ -1,9 +1,52 @@
 /**
  * @file BetterHTTP.ts
  * @description I am making a HTTP library from scratch because I am bored. This is not meant to be used in production. This is just for fun. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this, I am still alive. I am not responsible for any damage caused by this library. Use at your own risk. If you never hear from me again, it means the W3C ninjas have found me and I am now a vegetable. If you are reading this--
+ * @author 0x202e // oops i used the RLO sword
+ * @license ඞ
+ * @version 69
+ * @since January -1, 1970
+ * This module is Better HTTP
+ * Pros:
+ *  - It's better
+ *  - It's slower
+ *  - It's less secure
+ *  - It's less reliable
+ *  - It's less efficient
+ *  - It's less portable
+ *  - It's less scalable
+ *  - It's less maintainable
+ *  - It's less testable
+ *  - It's less performant
+ *  - It doesn't care what HTTP method you use, even if it doesn't exist
+ *  - It doesn't care what HTTP status code you use, even if it doesn't exist, even if it isn't a number (as long as it doesn't contain spaces)
+ *  - It doesn't care what HTTP version you use, even if it doesn't exist (actually it does care, it's 1.1)
+ *  - It doesn't care what HTTP header you use, even if it doesn't exist (wait thats true for normal HTTP too)
+ *  - It doesn't care what HTTP body you use, even if the method you're using doesn't support it
+ *  - It doesn't care what HTTP protocol you use, even if it doesn't exist (actually it does care, it's HTTP)
+ *  - It doesn't care what HTTP path you use, even if it is invalid
+ *  - You don't need to specify Connection: Upgrade for websockets anymore! Yay!
+ * Cons:
+ *  - It's worse
+ *  - It's faster
+ *  - It's more secure
+ *  - It's more reliable
+ *  - It's more efficient
+ *  - It's more portable
+ *  - It's more scalable
+ *  - It's more maintainable
+ *  - It's more testable
+ *  - It's more performant
+ *  - Can cause errors if you use it in production
+ *  - Can cause errors if you use it in development
+ *  - Can cause errors if you use it in testing
+ *  - Can cause errors if you use it in staging
+ *  - Can cause errors if you use it in QA
+ *  - Can cause errors if you use it in CI
+ *  - Can cause errors if you use it in CD
+ *  - Can cause errors if you use it in your mom's basement 
+ *  - Can cause errors if 
  */
 
-import { Duplex } from "stream";
 import { EventEmitter } from "events";
 import { Socket, Server as nativeServer } from "net";
 
