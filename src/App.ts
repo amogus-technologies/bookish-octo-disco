@@ -16,6 +16,6 @@ export class App {
                     statusMessage: 'OK'
                 });
             });
-        });
+        }).listen(8080);
     }
 }
