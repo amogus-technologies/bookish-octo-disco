@@ -16,9 +16,13 @@ export class HTTP {
     constructor() {
         this.parseRequest = HTTP.parseRequest;
         this.parseResponse = HTTP.parseResponse;
+        this.serializeRequest = HTTP.serializeRequest;
+        this.serializeResponse = HTTP.serializeResponse;
     }
     public parseRequest: (request: Buffer) => Request;
     public parseResponse: (response: Buffer) => Response;
+    public serializeRequest: (request: Request) => Buffer;
+    public serializeResponse: (response: Response) => Buffer;
     public static parseRequest(request: Buffer): Request {
         let requestStr = request.toString('binary');
         let [firstLine, ...head] = requestStr.split('\r\n\r\n')[0].split('\r\n');
