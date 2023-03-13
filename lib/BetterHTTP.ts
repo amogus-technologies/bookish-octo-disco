@@ -1,3 +1,5 @@
+import { Duplex } from "stream";
+
 export interface Response {
     statusCode: number;
     statusMessage: string;
@@ -67,4 +69,12 @@ export class HTTP {
         var responseBuf = Buffer.from(responseStr, 'binary');
         return Buffer.concat([responseBuf, response.body]);
     }
+}
+
+export class Client extends Duplex {
+    
+}
+
+export class Server {
+    
 }
